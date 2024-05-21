@@ -1,0 +1,126 @@
+* {
+  margin: 0px;
+}
+.login-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 90vh;
+  background: #f9f9f9;
+}
+.top-text{
+  background-color: aqua;
+  height: 10vh;
+  display:flex;
+  justify-content: left;
+  align-items: center;
+}
+.top-text h1{
+  margin-left: 30px;
+  color: white;
+  font-size: x-large;
+}
+
+.login-container h2 {
+  margin-bottom: 20px;
+}
+
+.login-container .error {
+  color: red;
+  margin-bottom: 20px;
+}
+
+.login-container form {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.login-container .form-group-password, .form-group-username{
+  margin-bottom: 15px;
+  width: 100%;
+  position: relative;
+}
+
+.login-container #password {
+  width: 100%;
+  padding: 8px;
+  padding-right: 40px; 
+  padding-left: 30px; 
+  box-sizing: border-box;
+}
+.login-container #username {
+  width: 100%;
+  padding: 8px;
+  padding-left: 30px; 
+  box-sizing: border-box;
+      
+}
+
+.login-container button {
+  padding: 10px;
+  cursor: pointer;
+}
+
+.login-container button[type="submit"]:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+}
+.form-group-username::before,
+.form-group-password::before {
+  content: '';
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 16px;
+  height: 16px;
+  background-size: contain;
+  background-repeat: no-repeat;
+  pointer-events: none;
+}
+
+.form-group-username::before {
+  background-image: url('https://cdn-icons-png.flaticon.com/512/3106/3106921.png');
+}
+
+.form-group-password::before {
+  background-image: url('https://cdn-icons-png.flaticon.com/512/3064/3064155.png');
+}
+
+.show-password-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  position: absolute;
+  right: 5px;
+  top: 50%;
+  transform: translateY(-50%);
+  padding: 0;
+}
+
+.show-password-btn img {
+  width: 20px;
+  height: 20px;
+}
+
+.autoSign {
+  display: flex;
+  justify-content: space-between;
+  width: 100%; 
+  align-items: center; 
+  margin-bottom: 15px;
+}
+
+.confirmButton{
+  width: 100%;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  background-color: aqua;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
