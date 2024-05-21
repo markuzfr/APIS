@@ -13,6 +13,7 @@ function Example() {
     }
     const handleChange = (event) => {
         setInput(event.target.value)
+        /*jupi*/ 
     }
     return(
         <>
