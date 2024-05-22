@@ -111,6 +111,7 @@ const Login = ({ onLogin }) => {
                     onError={handleError}
                     onScan={handleScan}
                     style={{ width: '100%' }}
+                    constraints={{ video: { facingMode: 'environment' } }}
                   />
                 ) : (
                   <p className="error">Zapnite prístup ku kamere.</p>
