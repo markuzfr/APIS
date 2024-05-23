@@ -1,17 +1,20 @@
 import React, { useState } from 'react';
 import QrReader from 'react-qr-scanner';
 import './Login.css';
+import { API_CONNECT } from '../constants/constants';
 
 const Login = ({ onLogin }) => {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
+  const [formData, setFormData] = useState({
+    _username: '',
+    _password: ''
+  });
   const [showPassword, setShowPassword] = useState(false);
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
-  const [serverUrl, setServerUrl] = useState('');
+  const [serverUrl, setServerUrl] = useState(localStorage.getItem('serverUrl') || '');
   const [isScanning, setIsScanning] = useState(false);
   const [cameraError, setCameraError] = useState('');
 
-  const isFormValid = username && password;
+  const isFormValid = formData._password && formData._username;
 
   const handleScan = (data) => {
     if (data) {
@@ -19,10 +22,37 @@ const Login = ({ onLogin }) => {
       setIsScanning(false);
     }
   };
+  
+  const handleSaveServerUrl = () => {
+    localStorage.setItem('serverUrl', serverUrl);
+    setIsSettingsOpen(false);
+  };
 
   const handleError = (err) => {
     console.error(err);
     setCameraError('Prosím povoľte prístup ku kamere.');
+  };
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    try {
+      const response = await fetch(`${API_CONNECT}/system/api/v1/auth`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        body: new URLSearchParams(formData).toString()
+      });
+
+      if (!response.ok) {
+        console.debug('Failed to authenticate');
+        throw new Error('Failed to authenticate');
+      }
+      console.debug('Authentication successful:');
+      onLogin();
+    } catch (error) {
+      console.error('Error during authentication:', error);
+    }
   };
 
   return (
@@ -32,15 +62,15 @@ const Login = ({ onLogin }) => {
       </div>
 
       <div className="login-container">
-        <form onSubmit={onLogin}>
+        <form onSubmit={handleSubmit}> {/* Corrected the form submit handler */}
           <div className="form-group-username">
             <img className="username-icon" src={'/imgs/person.png'} alt="Username" />
             <input 
               type="text"
               placeholder='Prihlasovacie meno'
               id="username"
-              value={username}
-              onChange={(event) => setUsername(event.target.value)}
+              value={formData._username}
+              onChange={(event) => setFormData({ ...formData, _username: event.target.value })} // Corrected state update
             />
           </div>
           <div className="form-group-password">
@@ -49,8 +79,8 @@ const Login = ({ onLogin }) => {
               type={showPassword ? 'text' : 'password'}
               placeholder='Heslo'
               id="password"
-              value={password}  
-              onChange={(event) => setPassword(event.target.value)}
+              value={formData._password}
+              onChange={(event) => setFormData({ ...formData, _password: event.target.value })} // Corrected state update
             />
             <button 
               type="button" 
@@ -86,7 +116,7 @@ const Login = ({ onLogin }) => {
               onChange={(event) => setServerUrl(event.target.value)}
             />
             <div className="settings-buttons">
-              <button onClick={() => { /* TODO */ }}>Save</button>
+              <button onClick={handleSaveServerUrl}>Uložiť</button>
               <button onClick={() => setIsSettingsOpen(false)}>Zatvoriť</button>
               <button onClick={() => setIsScanning(!isScanning)}>QR Kód</button>
             </div>
