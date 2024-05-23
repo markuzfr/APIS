@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import QrReader from 'react-qr-scanner';
 import './Login.css';
-import { API_CONNECT } from '../constants/constants';
+//import { API_CONNECT } from '../../constants/constants';
+import {authentification} from '../../api/apiCalls'
 
-const Login = ({ onLogin }) => {
+
+const Login = () => {
   const [formData, setFormData] = useState({
     _username: '',
     _password: ''
@@ -13,6 +15,7 @@ const Login = ({ onLogin }) => {
   const [serverUrl, setServerUrl] = useState(localStorage.getItem('serverUrl') || '');
   const [isScanning, setIsScanning] = useState(false);
   const [cameraError, setCameraError] = useState('');
+  const [wrongLogin, setWrongLogin] = useState('')
 
   const isFormValid = formData._password && formData._username;
 
@@ -33,27 +36,33 @@ const Login = ({ onLogin }) => {
     setCameraError('Prosím povoľte prístup ku kamere.');
   };
 
+  const handleInputChange = event => {
+    const {value} = event.target
+    const a = '_'
+    setFormData({
+      ...formData,
+      [a + event.target.id]: value,
+    })
+  }
+
   const handleSubmit = async (event) => {
-    event.preventDefault();
+    event.preventDefault()
+    setWrongLogin('');
     try {
-      const response = await fetch(`${API_CONNECT}/system/api/v1/auth`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded'
-        },
-        body: new URLSearchParams(formData).toString()
-      });
+      const response = await authentification(formData)
 
       if (!response.ok) {
-        console.debug('Failed to authenticate');
-        throw new Error('Failed to authenticate');
+        console.debug('Failed to authenticate:', response.statusText)
+        throw new Error('Failed to authenticate')
       }
-      console.debug('Authentication successful:');
-      onLogin();
+
+      console.debug('Authentication successful:')
+      window.location.href = '/Dashboard'
     } catch (error) {
-      console.error('Error during authentication:', error);
+      setWrongLogin('Zlé prihlasovacie meno alebo heslo!')
+      console.error('Error during authentication:', error)
     }
-  };
+  }
 
   return (
     <>
@@ -62,7 +71,7 @@ const Login = ({ onLogin }) => {
       </div>
 
       <div className="login-container">
-        <form onSubmit={handleSubmit}> {/* Corrected the form submit handler */}
+        <form onSubmit={handleSubmit}> 
           <div className="form-group-username">
             <img className="username-icon" src={'/imgs/person.png'} alt="Username" />
             <input 
@@ -70,7 +79,7 @@ const Login = ({ onLogin }) => {
               placeholder='Prihlasovacie meno'
               id="username"
               value={formData._username}
-              onChange={(event) => setFormData({ ...formData, _username: event.target.value })} // Corrected state update
+              onChange={handleInputChange } 
             />
           </div>
           <div className="form-group-password">
@@ -80,7 +89,7 @@ const Login = ({ onLogin }) => {
               placeholder='Heslo'
               id="password"
               value={formData._password}
-              onChange={(event) => setFormData({ ...formData, _password: event.target.value })} // Corrected state update
+              onChange={handleInputChange } 
             />
             <button 
               type="button" 
@@ -92,6 +101,9 @@ const Login = ({ onLogin }) => {
                 alt={showPassword ? 'Hide password' : 'Show password'}
               />
             </button>
+          </div>
+          <div className='loginError'>
+          {wrongLogin && <p className='wrongLoginError'>{wrongLogin}</p>}
           </div>
           <div className='autoSign'>
             <h4>Prihlásiť automaticky</h4>
