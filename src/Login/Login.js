@@ -6,24 +6,12 @@ const Login = ({ onLogin }) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
-  const [error, setError] = useState('');
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [serverUrl, setServerUrl] = useState('');
   const [isScanning, setIsScanning] = useState(false);
   const [cameraError, setCameraError] = useState('');
 
   const isFormValid = username && password;
-
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    if (!isFormValid) {
-      setError('All fields are required');
-      return;
-    }
-
-    setError('');
-    onLogin();
-  };
 
   const handleScan = (data) => {
     if (data) {
@@ -44,8 +32,7 @@ const Login = ({ onLogin }) => {
       </div>
 
       <div className="login-container">
-        {error && <p className="error">{error}</p>}
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={onLogin}>
           <div className="form-group-username">
             <img className="username-icon" src={'/imgs/person.png'} alt="Username" />
             <input 
@@ -110,7 +97,7 @@ const Login = ({ onLogin }) => {
                     delay={300}
                     onError={handleError}
                     onScan={handleScan}
-                    style={{ width: '100%' }}
+                    style={{ width: '100%', borderRadius: '15px' }}
                     constraints={{ video: { facingMode: 'environment' } }}
                   />
                 ) : (

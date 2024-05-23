@@ -7,10 +7,7 @@
   font-family: 'Raleway', sans-serif;
 }
 
-html, body {
-  height: 100%;
-  overflow: hidden; /* Prevent scrolling */
-}
+
 
 .top-text {
   background-color: #44BEC9;
