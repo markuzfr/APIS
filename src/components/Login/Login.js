@@ -1,9 +1,7 @@
 import React, { useState } from 'react';
 import QrReader from 'react-qr-scanner';
-import './Login.css';
-//import { API_CONNECT } from '../../constants/constants';
-import {authentification} from '../../api/apiCalls'
-
+import './Login.scss';
+import { authentification } from '../../api/apiCalls';
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -15,7 +13,7 @@ const Login = () => {
   const [serverUrl, setServerUrl] = useState(localStorage.getItem('serverUrl') || '');
   const [isScanning, setIsScanning] = useState(false);
   const [cameraError, setCameraError] = useState('');
-  const [wrongLogin, setWrongLogin] = useState('')
+  const [wrongLogin, setWrongLogin] = useState('');
 
   const isFormValid = formData._password && formData._username;
 
@@ -37,40 +35,44 @@ const Login = () => {
   };
 
   const handleInputChange = event => {
-    const {value} = event.target
-    const a = '_'
+    const { value } = event.target;
+    const a = '_';
     setFormData({
       ...formData,
       [a + event.target.id]: value,
-    })
-  }
+    });
+  };
 
   const handleSubmit = async (event) => {
-    event.preventDefault()
+    event.preventDefault();
     setWrongLogin('');
     try {
-      const response = await authentification(formData)
+      const response = await authentification(formData);
 
       if (!response.ok) {
-        console.debug('Failed to authenticate:', response.statusText)
-        throw new Error('Failed to authenticate')
+        console.debug('Failed to authenticate:', response.statusText);
+        throw new Error('Failed to authenticate');
+        
       }
-
-      console.debug('Authentication successful:')
-      window.location.href = '/Dashboard'
+      
+      console.debug('Authentication successful:');
+      localStorage.setItem('isAuthenticated', 'true');
+      window.location.href = '/Dashboard';
+      
     } catch (error) {
-      setWrongLogin('Zlé prihlasovacie meno alebo heslo!')
-      console.error('Error during authentication:', error)
+      setWrongLogin('Zlé prihlasovacie meno alebo heslo!');
+      console.error('Error during authentication:', error);
     }
-  }
-
+  };
+  localStorage.setItem('isAuthenticated', 'false');
+  
   return (
     <>
       <div className='top-text'> 
         <h1>webReader mobile 1.4.2</h1>
       </div>
-
       <div className="login-container">
+        {serverUrl && <p className='shownServerURL'>{serverUrl}</p>}
         <form onSubmit={handleSubmit}> 
           <div className="form-group-username">
             <img className="username-icon" src={'/imgs/person.png'} alt="Username" />
@@ -103,7 +105,7 @@ const Login = () => {
             </button>
           </div>
           <div className='loginError'>
-          {wrongLogin && <p className='wrongLoginError'>{wrongLogin}</p>}
+            {wrongLogin && <p className='wrongLoginError'>{wrongLogin}</p>}
           </div>
           <div className='autoSign'>
             <h4>Prihlásiť automaticky</h4>

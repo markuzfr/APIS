@@ -1,5 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Raleway:wght@400;700&display=swap');
-
+@import 'src/constants/variables.scss' ;
 * {
   margin: 0;
   padding: 0;
@@ -10,7 +10,7 @@
 
 
 .top-text {
-  background-color: #44BEC9;
+  background-color: $main-color;
   display: flex;
   height: 10vh;
   justify-content: left;
@@ -30,7 +30,7 @@
   align-items: center;
   justify-content: center;
   height: 90vh;
-  background: #f9f9f9;
+  background: $app-bg;
 }
 
 .login-container h2 {
@@ -132,7 +132,7 @@
   padding: 12px;
   border: none;
   border-radius: 20px;
-  background-color: #44BEC9;
+  background-color: $main-color;
   color: white;
   font-size: 1.25rem;
   cursor: pointer;
@@ -145,7 +145,7 @@
   bottom: 10vh;
   width: 50px;
   height: 50px;
-  background-color: #44BEC9;
+  background-color: $main-color;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -195,7 +195,7 @@
   width: 100%;
   border: none;
   border-radius: 10px;
-  background-color: #44BEC9;
+  background-color: $main-color;
   color: white;
   font-size: 1rem;
   cursor: pointer;
@@ -208,4 +208,8 @@
   display: flex;
   justify-content: center;
   width: 100%;
+}
+.shownServerURL {
+  position: absolute;
+  top: 25vh; 
 }

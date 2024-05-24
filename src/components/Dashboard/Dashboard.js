@@ -1,9 +1,17 @@
-import React from 'react'
+import React, { useEffect } from 'react';
 
-function Dashboard() {
+const Dashboard = () => {
+  useEffect(() => {
+    const isAuthenticated = localStorage.getItem('isAuthenticated') === 'true';
+    if (!isAuthenticated) {
+      window.location.href = '/';
+      
+    }
+  }, []);
+
   return (
-    <div>insane Dashboard</div>
-  )
-}
+    <div>Insane Dashboard</div>
+  );
+};
 
 export default Dashboard;
