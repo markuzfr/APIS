@@ -8,13 +8,20 @@ const Login = () => {
     _username: '',
     _password: ''
   });
+  
   const [showPassword, setShowPassword] = useState(false);
-  const [isSettingsOpen, setIsSettingsOpen] = useState(false);
-  const [serverUrl, setServerUrl] = useState(localStorage.getItem('serverUrl') || '');
-  const [isScanning, setIsScanning] = useState(false);
-  const [cameraError, setCameraError] = useState('');
-  const [wrongLogin, setWrongLogin] = useState('');
-  const [autoLogin, setAutoLogin] = useState(false);
+  
+  const [settings, setSettings] = useState({
+    serverUrl: localStorage.getItem('serverUrl') || '',
+    isSettingsOpen: false,
+    isScanning: false,
+    cameraError: ''
+  })
+
+  const [loginData, setLoginData] = useState({
+    wrongLogin: '',
+    autoLogin: false
+  })
 
 
   useEffect(() => {
@@ -28,7 +35,10 @@ const Login = () => {
         _password: ''
       });
     }
-    if(storedAutoLogin) setAutoLogin(storedAutoLogin)
+    if(storedAutoLogin) setLoginData(prevData => ({
+      ...prevData,
+      autoLogin: storedAutoLogin
+    }))
   }, []);
   
 
@@ -38,19 +48,28 @@ const Login = () => {
 
   const handleScan = (data) => {
     if (data) {
-      setServerUrl(data.text);
-      setIsScanning(false);
+      setSettings(prevSettings => ({
+        ...prevSettings,
+        serverUrl: data.text,
+        isScanning: false
+      }));
     }
   };
   
   const handleSaveServerUrl = () => {
-    localStorage.setItem('serverUrl', serverUrl);
-    setIsSettingsOpen(false);
+    localStorage.setItem('serverUrl', settings.serverUrl);
+    setSettings(prevSettings => ({
+      ...prevSettings,
+      isSettingsOpen: false
+    }));
   };
 
   const handleError = (err) => {
     console.error(err);
-    setCameraError('Prosím povoľte prístup ku kamere.');
+    setSettings(prevSettings => ({
+      ...prevSettings,
+      cameraError: 'Prosím povoľte prístup ku kamere.'
+    }));
   };  
 
   const handleInputChange = event => {
@@ -60,7 +79,10 @@ const Login = () => {
       ...formData,
       [a + event.target.id]: value,
     });
-    setWrongLogin('');
+    setLoginData(prevData => ({
+      ...prevData,
+      wrongLogin: ''
+    }));
   };
   
   const handleSubmit = async (event) => {
@@ -78,7 +100,7 @@ const Login = () => {
       localStorage.setItem('isAuthenticated', 'true');
       window.location.href = '/Dashboard';
 
-      if(autoLogin){
+      if(loginData.autoLogin){
         localStorage.setItem('autoLoginUsername', formData._username)
         localStorage.setItem('autoLogin', 'true')
       }else 
@@ -87,8 +109,10 @@ const Login = () => {
         localStorage.setItem('autoLogin', 'false')
       }
     } catch (error) {
-      setWrongLogin('Zlé prihlasovacie meno alebo heslo!');
-      console.error('Error during authentication:', error);
+      setLoginData(prevData => ({
+        ...prevData,
+        wrongLogin: 'Zlé prihlasovacie meno alebo heslo!'
+      }));console.error('Error during authentication:', error);
     }
   };
   localStorage.setItem('isAuthenticated', 'false');
@@ -99,7 +123,7 @@ const Login = () => {
         <h1>webReader mobile 1.4.2</h1>
       </div>
       <div className="login-container">
-        {serverUrl && <p className='shownServerURL'>{serverUrl}</p>}
+        {settings.serverUrl && <p className='shownServerURL'>{settings.serverUrl}</p>}
         <form onSubmit={handleSubmit}> 
           <div className="form-group-username">
             <img className="username-icon" src={'/imgs/person.png'} alt="Username" />
@@ -132,36 +156,52 @@ const Login = () => {
             </button>
           </div>
           <div className='loginError'>
-            {wrongLogin && <p className='wrongLoginError'>{wrongLogin}</p>}
+            {loginData.wrongLogin && <p className='wrongLoginError'>{loginData.wrongLogin}</p>}
           </div>
           <div className='autoSign'>
             <h4>Prihlásiť automaticky</h4>
-            <input type='checkbox' checked={autoLogin} onChange={() => setAutoLogin(!autoLogin)}/>
+            <input type='checkbox' checked={loginData.autoLogin}
+                onChange={() => setLoginData(prevData => ({
+                ...prevData,
+                autoLogin: !prevData.autoLogin
+              }))}/>
           </div>
           <button type="submit" className='confirmButton' disabled={!isFormValid}>PRIHLÁSIŤ</button>
         </form>
       </div>
 
-      <div className='settingsBox' onClick={() => setIsSettingsOpen(true)}>
+      <div className='settingsBox' onClick={() => setSettings(prevSettings => ({
+        ...prevSettings,
+        isSettingsOpen: true
+      }))}>
         <img src="/imgs/cog.png" alt="Settings" />
       </div>
 
-      {isSettingsOpen && (
+      {settings.isSettingsOpen && (
         <div className="settings-modal">
           <div className="settings-content">
             <h2>Nastavenia</h2>
             <input 
               type="text"
               placeholder='Zadajte URL adresu'
-              value={serverUrl}
-              onChange={(event) => setServerUrl(event.target.value)}
+              value={settings.serverUrl}
+              onChange={(event) => setSettings(prevSettings => ({
+                ...prevSettings,
+                serverUrl: event.target.value
+              }))}
             />
             <div className="settings-buttons">
               <button onClick={handleSaveServerUrl}>Uložiť</button>
-              <button onClick={() => setIsSettingsOpen(false)}>Zatvoriť</button>
-              <button onClick={() => setIsScanning(!isScanning)}>QR Kód</button>
+              <button onClick={() => setSettings(prevSettings => ({
+                ...prevSettings,
+                isSettingsOpen: false
+              }))}>Zatvoriť</button>
+              <button onClick={() => setSettings(prevSettings => ({
+                ...prevSettings,
+                isScanning: !prevSettings.isScanning
+              }))}>QR Kód</button>
             </div>
-            {isScanning && (
+            {settings.isScanning && (
               <div className="qr-reader-container">
                 {navigator.mediaDevices ? (
                   <QrReader
@@ -174,7 +214,7 @@ const Login = () => {
                 ) : (
                   <p className="error">Zapnite prístup ku kamere.</p>
                 )}
-                {cameraError && <p className="error">{cameraError}</p>}
+                {settings.cameraError && <p className="error">{settings.cameraError}</p>}
               </div>
             )}
           </div>
