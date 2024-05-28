@@ -32,7 +32,7 @@ const Login = () => {
   const handleError = (err) => {
     console.error(err);
     setCameraError('Prosím povoľte prístup ku kamere.');
-  };
+  };  
 
   const handleInputChange = event => {
     const { value } = event.target;
@@ -41,11 +41,11 @@ const Login = () => {
       ...formData,
       [a + event.target.id]: value,
     });
+    setWrongLogin('');
   };
-
+  
   const handleSubmit = async (event) => {
     event.preventDefault();
-    setWrongLogin('');
     try {
       const response = await authentification(formData);
 
