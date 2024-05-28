@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import QrReader from 'react-qr-scanner';
 import './Login.scss';
 import { authentification } from '../../api/apiCalls';
@@ -14,6 +14,25 @@ const Login = () => {
   const [isScanning, setIsScanning] = useState(false);
   const [cameraError, setCameraError] = useState('');
   const [wrongLogin, setWrongLogin] = useState('');
+  const [autoLogin, setAutoLogin] = useState(false);
+
+
+  useEffect(() => {
+
+    const storedUsername = localStorage.getItem('autoLoginUsername');
+    const storedAutoLogin = localStorage.getItem('autoLogin') === 'true';
+
+    if (storedUsername) {
+      setFormData({
+        _username: storedUsername,
+        _password: ''
+      });
+    }
+    if(storedAutoLogin) setAutoLogin(storedAutoLogin)
+  }, []);
+  
+
+
 
   const isFormValid = formData._password && formData._username;
 
@@ -58,7 +77,15 @@ const Login = () => {
       console.debug('Authentication successful:');
       localStorage.setItem('isAuthenticated', 'true');
       window.location.href = '/Dashboard';
-      
+
+      if(autoLogin){
+        localStorage.setItem('autoLoginUsername', formData._username)
+        localStorage.setItem('autoLogin', 'true')
+      }else 
+      {
+        localStorage.removeItem('autoLoginUsername')
+        localStorage.setItem('autoLogin', 'false')
+      }
     } catch (error) {
       setWrongLogin('Zlé prihlasovacie meno alebo heslo!');
       console.error('Error during authentication:', error);
@@ -109,7 +136,7 @@ const Login = () => {
           </div>
           <div className='autoSign'>
             <h4>Prihlásiť automaticky</h4>
-            <input type='checkbox'/>
+            <input type='checkbox' checked={autoLogin} onChange={() => setAutoLogin(!autoLogin)}/>
           </div>
           <button type="submit" className='confirmButton' disabled={!isFormValid}>PRIHLÁSIŤ</button>
         </form>
@@ -136,7 +163,7 @@ const Login = () => {
             </div>
             {isScanning && (
               <div className="qr-reader-container">
-                {navigator.mediaDevices && navigator.mediaDevices.getUserMedia ? (
+                {navigator.mediaDevices ? (
                   <QrReader
                     delay={300}
                     onError={handleError}
