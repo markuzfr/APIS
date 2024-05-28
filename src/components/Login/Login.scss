@@ -1,0 +1,215 @@
+@import url('https://fonts.googleapis.com/css2?family=Raleway:wght@400;700&display=swap');
+@import 'src/constants/variables.scss' ;
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Raleway', sans-serif;
+}
+
+
+
+.top-text {
+  background-color: $main-color;
+  display: flex;
+  height: 10vh;
+  justify-content: left;
+  align-items: center;
+  width: 100%;
+}
+
+.top-text h1 {
+  margin-left: 30px;
+  color: white;
+  font-size: 1.5rem;
+}
+
+.login-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 90vh;
+  background: $app-bg;
+}
+
+.login-container h2 {
+  margin-bottom: 20px;
+  font-size: 1.5rem;
+}
+
+.login-container .error {
+  color: red;
+  margin-bottom: 20px;
+  font-size: 1rem;
+}
+
+.login-container form {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 90%;
+  max-width: 400px;
+}
+
+.login-container .form-group-password, .form-group-username {
+  margin-bottom: 20px;
+  width: 100%;
+  position: relative;
+}
+
+.login-container #password, .login-container #username {
+  width: 100%;
+  padding: 12px;
+  padding-left: 40px;
+  box-sizing: border-box;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  transition: border-color 0.3s;
+}
+
+.login-container #password {
+  padding-right: 50px;
+}
+
+.login-container #password:hover, .login-container #username:hover {
+  border-color: #444;
+}
+
+.login-container button {
+  padding: 12px;
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+.login-container button[type="submit"]:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+}
+
+.form-group-username, .form-group-password {
+  position: relative;
+}
+
+.username-icon, .password-icon {
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 20px;
+  height: 20px;
+}
+
+.show-password-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  position: absolute;
+  right: 5px;
+  top: 55%;
+  transform: translateY(-50%);
+  padding: 0;
+}
+
+.show-password-btn img {
+  width: 24px;
+  height: 24px;
+}
+
+.autoSign {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  align-items: center;
+  margin-bottom: 20px;
+  font-size: 1rem;
+}
+
+.confirmButton {
+  align-self: center;
+  width: 50%;
+  padding: 12px;
+  border: none;
+  border-radius: 20px;
+  background-color: $main-color;
+  color: white;
+  font-size: 1.25rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.settingsBox {
+  position: fixed;
+  right: 20px;
+  bottom: 10vh;
+  width: 50px;
+  height: 50px;
+  background-color: $main-color;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 20%;
+  cursor: pointer;
+}
+
+.settingsBox img {
+  width: 24px;
+  height: 24px;
+  filter: invert(100%);
+}
+.settings-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.settings-content {
+  background: white;
+  padding: 20px;
+  border-radius: 5px;
+  width: 80%;
+  max-width: 400px;
+  text-align: center;
+}
+.settings-content input{
+  margin: 20px;
+  padding: 5px;
+}
+.settings-buttons {
+  display: flex;
+  justify-content: space-around;
+}
+
+.settings-buttons button {
+  padding: 5px;
+  margin: 5px;
+  cursor: pointer;
+  align-self: center;
+  width: 100%;
+  border: none;
+  border-radius: 10px;
+  background-color: $main-color;
+  color: white;
+  font-size: 1rem;
+  cursor: pointer;
+}
+.wrongLoginError{
+  padding-bottom: 10px;
+  color: red;
+}
+.loginError{
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+.shownServerURL {
+  position: absolute;
+  top: 25vh; 
+}
