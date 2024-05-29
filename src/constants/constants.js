@@ -1,1 +1,0 @@
-export const API_CONNECT = 'https://dochadzka.top/demoap'

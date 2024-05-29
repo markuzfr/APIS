@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import QrReader from 'react-qr-scanner';
 import './Login.scss';
-import { authentification } from '../../api/apiCalls';
+import { authentification } from '../../api/apiCalls.ts';
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -16,16 +16,14 @@ const Login = () => {
     isSettingsOpen: false,
     isScanning: false,
     cameraError: ''
-  })
+  });
 
   const [loginData, setLoginData] = useState({
     wrongLogin: '',
     autoLogin: false
-  })
-
+  });
 
   useEffect(() => {
-
     const storedUsername = localStorage.getItem('autoLoginUsername');
     const storedAutoLogin = localStorage.getItem('autoLogin') === 'true';
 
@@ -38,11 +36,8 @@ const Login = () => {
     if(storedAutoLogin) setLoginData(prevData => ({
       ...prevData,
       autoLogin: storedAutoLogin
-    }))
+    }));
   }, []);
-  
-
-
 
   const isFormValid = formData._password && formData._username;
 
@@ -88,12 +83,11 @@ const Login = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      const response = await authentification(formData);
+      const response = await authentification(formData, settings.serverUrl);
 
       if (!response.ok) {
         console.debug('Failed to authenticate:', response.statusText);
         throw new Error('Failed to authenticate');
-        
       }
       
       console.debug('Authentication successful:');
@@ -101,20 +95,21 @@ const Login = () => {
       window.location.href = '/Dashboard';
 
       if(loginData.autoLogin){
-        localStorage.setItem('autoLoginUsername', formData._username)
-        localStorage.setItem('autoLogin', 'true')
-      }else 
-      {
-        localStorage.removeItem('autoLoginUsername')
-        localStorage.setItem('autoLogin', 'false')
+        localStorage.setItem('autoLoginUsername', formData._username);
+        localStorage.setItem('autoLogin', 'true');
+      } else {
+        localStorage.removeItem('autoLoginUsername');
+        localStorage.setItem('autoLogin', 'false');
       }
     } catch (error) {
       setLoginData(prevData => ({
         ...prevData,
         wrongLogin: 'Zlé prihlasovacie meno alebo heslo!'
-      }));console.error('Error during authentication:', error);
+      }));
+      console.error('Error during authentication:', error);
     }
   };
+
   localStorage.setItem('isAuthenticated', 'false');
   
   return (
@@ -132,7 +127,7 @@ const Login = () => {
               placeholder='Prihlasovacie meno'
               id="username"
               value={formData._username}
-              onChange={handleInputChange } 
+              onChange={handleInputChange} 
             />
           </div>
           <div className="form-group-password">
@@ -142,7 +137,7 @@ const Login = () => {
               placeholder='Heslo'
               id="password"
               value={formData._password}
-              onChange={handleInputChange } 
+              onChange={handleInputChange} 
             />
             <button 
               type="button" 
