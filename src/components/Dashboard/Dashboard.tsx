@@ -10,7 +10,7 @@ const Dashboard = () => {
   }, []);
 
   return (
-    <div>Insane Dashboard</div>
+    <div>XDDDDDDDD</div>
   );
 };
 
