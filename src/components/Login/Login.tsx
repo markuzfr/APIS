@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import './Login.scss';
 import { authentification } from '../../api/apiCalls.ts';
-import Settings from '../Settings/Settings.tsx';
+import Settings from '../../common/Settings/Settings.tsx';
+
+
 const Login = () => {
   const [formData, setFormData] = useState({
     _username: '',

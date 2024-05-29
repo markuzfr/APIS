@@ -1,5 +1,6 @@
 import React from 'react';
 import QrReader from 'react-qr-scanner';
+import './Settings.scss'
 
 const Settings = ({ settings, setSettings, handleSaveServerUrl, handleScan, handleError }) => {
   return (
