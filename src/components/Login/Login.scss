@@ -166,3 +166,12 @@
   position: absolute;
   top: 25vh;
 }
+.wrongLoginError{
+  padding-bottom: 10px;
+  color: red;
+}
+.loginError{
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}

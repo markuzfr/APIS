@@ -3,7 +3,6 @@ import './Login.scss';
 import { authentification } from '../../api/apiCalls.ts';
 import Settings from '../../common/Settings/Settings.tsx';
 
-
 const Login = () => {
   const [formData, setFormData] = useState({
     _username: '',
