@@ -5,6 +5,9 @@ const Dashboard: React.FC = () => {
   const [currentTime, setCurrentTime] = useState(new Date());
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [sidebarPosition, setSidebarPosition] = useState(0);
+  const [angleIcon, setAngleIcon] = useState(
+    "/imgs/angle_double_right_icon.png"
+  );
 
   useEffect(() => {
     const isAuthenticated = localStorage.getItem("isAuthenticated") === "true";
@@ -22,63 +25,73 @@ const Dashboard: React.FC = () => {
     localStorage.removeItem("isAuthenticated");
     window.location.href = "/";
   };
+
   const toggleSidebar = () => {
     setSidebarOpen(!sidebarOpen);
-    setSidebarPosition(sidebarOpen ? 0:170)
+    setSidebarPosition(sidebarOpen ? 0 : 160);
+    setAngleIcon(
+      sidebarOpen
+        ? "/imgs/angle_double_right_icon.png"
+        : "/imgs/angle_double_left_icon.png"
+    );
   };
+
   return (
     <div className="main">
-        <div className="navbar">
+      <div className="navbar">
         <div className="navbar-content">
-          <div className="navbar-user" onClick={toggleSidebar} style={{ transform: `translateX(${sidebarPosition}px)` }}>
-            <p>hehe</p>
+          <div
+            className="navbar-user"
+            onClick={toggleSidebar}
+            style={{ transform: `translateX(${sidebarPosition}px)` }}
+          >
+            <img className="icon" src="/imgs/person.png" alt="" />
+            <img className="icon" src={angleIcon} alt="angle" />
           </div>
           <button onClick={handleLogout}>Odhlásiť</button>
         </div>
-      <div className={`sidebar ${sidebarOpen ? "" : "hidden"}`}>
-        <ul>
-          <li>Button 1</li>
-          <li>Button 2</li>
-          <li>Button 3</li>
-          <li>Name 1</li>
-          <li>Name 1</li>
-          <li>Name 1</li>
-          <li>Name 1</li>
-          <li>Name 1</li>
-          <li>Name 1</li>
-          <li>Name 1</li>
-          <li>Name 1</li>
-          <li>Name 1</li>
-          <li>Name 1</li>
-          <li>Name 1</li>
-          <li>Name 1</li>
-          <li>Name 1</li>
-          <li>Name 1</li>
-          <li>Name 1</li>
-          <li>Name 1</li>
-          <li>Name 1</li>
-          <li>Name 1</li>
-          <li>Name 1</li>
-          <li>Name 1</li>
-          <li>Name 1</li>
-          <li>Name 1</li>
-          <li>Name 1</li>
-          <li>Name 1</li>
-          <li>Name 1</li>
-          <li>Name 1</li>
-          <li>Name 1</li>
-          <li>Name 1</li>
-          <li>Name 1</li>
-          <li>Name 1</li>
-          <li>Name 1</li>
-          <li>Name 1</li>
-          <li>Name 1</li>
-          <li>Name 1</li>
-          <li>Name 1</li>
-          <li>Name 1</li>
-          <li>Name 1</li>
-        </ul>
-      </div>
+        <div className={`sidebar ${sidebarOpen ? "" : "hidden"}`}>
+          <div className="sidebar-top"></div>
+          <ul>
+            <li>Name 1</li>
+            <li>Name 1</li>
+            <li>Name 1</li>
+            <li>Name 1</li>
+            <li>Name 1</li>
+            <li>Name 1</li>
+            <li>Name 1</li>
+            <li>Name 1</li>
+            <li>Name 1</li>
+            <li>Name 1</li>
+            <li>Name 1</li>
+            <li>Name 1</li>
+            <li>Name 1</li>
+            <li>Name 1</li>
+            <li>Name 1</li>
+            <li>Name 1</li>
+            <li>Name 1</li>
+            <li>Name 1</li>
+            <li>Name 1</li>
+            <li>Name 1</li>
+            <li>Name 1</li>
+            <li>Name 1</li>
+            <li>Name 1</li>
+            <li>Name 1</li>
+            <li>Name 1</li>
+            <li>Name 1</li>
+            <li>Name 1</li>
+            <li>Name 1</li>
+            <li>Name 1</li>
+            <li>Name 1</li>
+            <li>Name 1</li>
+            <li>Name 1</li>
+            <li>Name 1</li>
+            <li>Name 1</li>
+            <li>Name 1</li>
+            <li>Name 1</li>
+            <li>Name 1</li>
+          </ul>
+        </div>
       </div>
       <div className="dashboard-container">
         <div className="time-display">
@@ -94,14 +107,21 @@ const Dashboard: React.FC = () => {
         <div className="action-container">
           <div className="note-section">
             <div className="last-action">
-              <span>&#8635;</span>
+              <img className="last-action-image" src="/imgs/time.png" alt="" />
               <div className="last-action-text">Práca / Odchod</div>
               <div className="last-action-time">time/date</div>
             </div>
             <button>Pridať poznámku</button>
           </div>
           <div className="text-input-section">
-            <p>Poznámka</p>
+            <div className="text-input-section-img-p">
+              <img
+                className="text-input-section-img"
+                src="/imgs/messege_icon.png"
+                alt=""
+              />
+              <p>Poznámka</p>
+            </div>
             <input type="text" />
           </div>
           <div className="action-border">
